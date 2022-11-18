@@ -5,7 +5,7 @@ import torch.nn.functional as F
 from utils import gelu, LayerNorm
 from transformer import TransformerLayer, Embedding, LearnedPositionalEmbedding, SelfAttentionMask
 from label_smoothing import LabelSmoothing 
-from LanguageModelEval.lm_eval import init_model
+# from LanguageModelEval.lm_eval import init_model
 from metrics import eval_tpl, eval_rhythm
 import re
 
