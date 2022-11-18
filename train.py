@@ -249,14 +249,14 @@ def run(args, local_rank):
                 if not os.path.exists(args.save_dir):
                     os.mkdir(args.save_dir)
 
-                # model.eval()
-                # ppl_before = eval_epoch(args, model, vocab, local_rank, "epoch-" + str(train_data.epoch_id) + "-acm-" + str(batch_acm))
-                # model.train()
+                model.eval()
+                ppl_before = eval_epoch(args, model, vocab, local_rank, "epoch-" + str(train_data.epoch_id) + "-acm-" + str(batch_acm))
+                model.train()
 
                 torch.save({'args':args, 'model':model.state_dict()}, '%s/epoch%d_batch_%d'%(args.save_dir, train_data.epoch_id, batch_acm))
-                # if ppl_before < best_ppl:
-                    # torch.save({'args':args, 'model':model.state_dict(), 'optimizer':optimizer.state_dict()}, '%s/songci.ckpt'%(args.save_dir))
-                    # best_ppl = ppl_before
+                if ppl_before < best_ppl:
+                    torch.save({'args':args, 'model':model.state_dict(), 'optimizer':optimizer.state_dict()}, '%s/songci.ckpt'%(args.save_dir))
+                    best_ppl = ppl_before
 
 def init_processes(args, local_rank, fn, backend='nccl'):
     """ Initialize the distributed environment. """
