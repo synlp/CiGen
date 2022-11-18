@@ -117,7 +117,7 @@ class BIGLM(nn.Module):
     def ppl(self, xs_tpl, xs_seg, xs_pos, ys_truth, ys_tpl, ys_seg, ys_pos, msk, ys_truth_ner):
         seq_len, bsz = ys_tpl.size()
         with torch.no_grad():
-            probs, logprobs = self.forward_base(xs_tpl, xs_seg, xs_pos, ys_tpl, ys_seg, ys_pos, msk, ys_truth=ys_truth_ner)
+            probs, logprobs = self.forward_base_stage1(xs_tpl, xs_seg, xs_pos, ys_tpl, ys_seg, ys_pos, msk, ys_truth=ys_truth_ner)
             
 
             shifted = ys_truth_ner.clone()
@@ -129,7 +129,7 @@ class BIGLM(nn.Module):
             probs1 = tmp * probs
 
             ###########################stage 2
-            probs, logprobs = self.forward_base(xs_tpl, xs_seg, xs_pos, ys_tpl, ys_seg, ys_pos, msk, ys_inp_stage1=shifted, ys_truth=ys_truth, stage=2)
+            probs, logprobs = self.forward_base_stage2(xs_tpl, xs_seg, xs_pos, ys_tpl, ys_seg, ys_pos, msk, ys_inp_stage1=shifted, ys_truth=ys_truth, stage=2)
 
             probs2 = ~tmp * probs
             probs = probs1 + probs2
